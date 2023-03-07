@@ -5,7 +5,7 @@
 # - visuals for the blog
 #
 # Author: Hans Weda @ rond consulting
-# Date: 28 februari 2023
+# Date: 7 march 2023
 
 rm(list=ls())
 
@@ -287,6 +287,8 @@ df <- merge(
   by.y="wijkcode"
 )
 
+
+# creating a gif with an animated geographical map
 require(gganimate)
 require(viridis)
 library(gifski)
@@ -309,6 +311,9 @@ myGif <- ggplot2::ggplot(data=df, mapping=aes(fill=perc)) +
 
 animate(myGif, duration = 5, fps = 10, start_pause=5, end_pause=5, width = 600, height = 800, renderer = gifski_renderer())
 anim_save(file.path("figures", "elderly.gif"))
+
+
+# Alternative forecast with auto.arima
 
 # auto.arima
 require(forecast)
