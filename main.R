@@ -98,6 +98,8 @@ ggplot2::ggplot(
 require(devtools)
 
 # install 'grenswijzigen' package from Github
+# Note: in some cases the 'renv' package erroneously interacts with devtools.
+#   In those cases please deactivate renv by `renv::deactivate()` before installing from github with devtools.
 devtools::install_github("https://github.com/VNG-Realisatie/grenswijzigen")
 library(grenswijzigen)
 
