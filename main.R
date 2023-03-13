@@ -9,6 +9,9 @@
 
 rm(list=ls())
 
+
+# ==========================================================
+
 # search statline database
 require("cbsodataR")
 out <- cbsodataR::cbs_search(query="Kerncijfers wijken en buurten")
@@ -20,6 +23,10 @@ View(df)
 write.csv(head(df), file=file.path("data", "kerncijfers_example.csv"))
 print(table(df["SoortRegio_2"]))
 
+
+
+
+# ==========================================================
 
 # load all kerncijfers datasets
 require(dplyr)
@@ -52,6 +59,10 @@ for (id in ids) {
 
 # take a look at the result
 View(df)
+write.csv(head(df), file=file.path("data", "kerncijfers_all.csv"))
+
+# ==========================================================
+
 
 
 # explore the number of municipalities
@@ -69,6 +80,8 @@ ggplot2::ggplot(
   )
   
 
+
+# ==========================================================
 
 # show population of selected municipalities
 selected_municipalities = c("Vught", "Eemsdelta", "Wageningen", "Montferland", "Gorinchem")
@@ -95,11 +108,17 @@ ggplot2::ggplot(
 #   mutate(diff = abs(AantalInwoners_5 - 35000)) %>%
 #   arrange(diff)
 
+# ==========================================================
+
+
+
 require(devtools)
 
 # install 'grenswijzigen' package from Github
 # Note: in some cases the 'renv' package erroneously interacts with devtools.
-#   In those cases please deactivate renv by `renv::deactivate()` before installing from github with devtools.
+#   In those cases please deactivate renv by `renv::deactivate()` before 
+#   installing from github with devtools.
+
 devtools::install_github("https://github.com/VNG-Realisatie/grenswijzigen")
 library(grenswijzigen)
 
@@ -126,6 +145,9 @@ print(table(df_transformed$jaar))
 
 View(df_transformed)
 
+# ==========================================================
+
+
 # show how the transformed data looks like
 ggplot2::ggplot(
   data = df_transformed %>%
@@ -148,6 +170,9 @@ ggplot2::ggplot(
   ggplot2::scale_linetype_manual(values=c("solid", "dotted"), labels=c("Factual", "Estimated")) +
   ggplot2::theme_bw()
 
+
+
+# ==========================================================
 
 # development of elderly population
 require(scales)
@@ -172,6 +197,8 @@ ggplot2::ggplot(
 # forecast
 require(dlm)
 
+
+# ==========================================================
 
 create_forecast <- function(municipality, feature) {
   # state space model with deterministic trend
@@ -212,6 +239,7 @@ create_forecast <- function(municipality, feature) {
   return(df.out)
 }
 
+# ==========================================================
 
 # create forecast for Vught
 p <- ggplot2::ggplot(
@@ -247,6 +275,9 @@ p
 dev.off()
 
 
+
+# ==========================================================
+
 # make forecast for all municipalities
 forecast_all <- function(feature) {
   cat(sprintf("Forecasting all for feature %s", feature), "\n")
@@ -273,6 +304,9 @@ df.plot <- cbind(
 )
 
 print(table(df.plot$jaar))
+
+
+# ==========================================================
 
 # get geo-boundaries for municipalities
 require(sf)
@@ -313,6 +347,9 @@ myGif <- ggplot2::ggplot(data=df, mapping=aes(fill=perc)) +
 
 animate(myGif, duration = 5, fps = 10, start_pause=5, end_pause=5, width = 600, height = 800, renderer = gifski_renderer())
 anim_save(file.path("figures", "elderly.gif"))
+
+
+# ==========================================================
 
 
 # Alternative forecast with auto.arima
